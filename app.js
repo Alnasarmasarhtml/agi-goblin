@@ -449,7 +449,7 @@ function startBlinkLoop(){
     blinkTimer = setTimeout(() => {
       if (!speaking) blink();
       next();
-    }, 3500 + Math.random() * 3000);
+    }, 1800 + Math.random() * 2200); // every 1.8-4s
   }
   next();
 }

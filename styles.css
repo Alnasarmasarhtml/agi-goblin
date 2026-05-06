@@ -728,6 +728,19 @@ body::after{
   box-shadow:0 0 80px rgba(124,252,0,.25),inset 0 0 40px rgba(0,0,0,.6);
   position:relative;z-index:2;
   filter:contrast(1.05) saturate(1.05);
+  animation:spriteBreath 4s ease-in-out infinite, spriteSway 11s ease-in-out infinite;
+  transform-origin:center bottom;
+}
+@keyframes spriteBreath{
+  0%,100%{transform:scale(1) translateY(0)}
+  50%{transform:scale(1.018) translateY(-2px)}
+}
+@keyframes spriteSway{
+  0%,100%{filter:contrast(1.05) saturate(1.05) brightness(1)}
+  46%{filter:contrast(1.08) saturate(1.1) brightness(1.04)}
+  47%{filter:contrast(1.2) saturate(1.3) brightness(1.15) hue-rotate(8deg)}
+  48%{filter:contrast(1.05) saturate(1.05) brightness(1)}
+  50%{filter:contrast(1.05) saturate(1.05) brightness(1)}
 }
 .chapel-sprite-glow{
   position:absolute;inset:-40px;
