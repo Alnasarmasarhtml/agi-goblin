@@ -246,60 +246,31 @@ body::after{
   border:1px solid rgba(124,252,0,.3);padding:8px 14px;align-self:flex-start;
   background:rgba(124,252,0,.05);
 }
-.hero-title{
+/* Hero — three brand-mark letters as images */
+.hero-letters{
+  display:flex;align-items:center;justify-content:flex-start;
+  gap:clamp(6px,1.2vw,18px);
+  height:clamp(140px,20vw,280px);
+  padding:0;margin:0;
   position:relative;
-  font-family:'Pirata One','UnifrakturCook',serif;
-  font-size:clamp(110px,16vw,240px);
-  line-height:.85;letter-spacing:.06em;
-  display:inline-block;
-  isolation:isolate;
-}
-/* main letterform — gold-to-green metallic gradient, blackletter */
-.hero-title .ht-main{
-  position:relative;z-index:3;
-  font-family:'Pirata One','UnifrakturCook',serif;
-  background:linear-gradient(180deg,
-    #fff8d6 0%,
-    var(--gold-glow) 18%,
-    var(--gold) 45%,
-    #6a4a20 70%,
-    var(--green-deep) 92%,
-    var(--green) 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:
-    drop-shadow(0 2px 0 rgba(0,0,0,.7))
-    drop-shadow(0 0 40px rgba(201,162,74,.45))
-    drop-shadow(0 0 80px rgba(124,252,0,.18));
+    drop-shadow(0 4px 0 rgba(0,0,0,.55))
+    drop-shadow(0 0 50px rgba(201,162,74,.25))
+    drop-shadow(0 0 90px rgba(124,252,0,.18));
 }
-/* angular/futuristic echo behind main */
-.hero-title .ht-back{
-  position:absolute;inset:0;z-index:1;
-  font-family:'Audiowide','Tektur',sans-serif;
-  letter-spacing:.18em;
-  background:linear-gradient(180deg,transparent 30%,var(--green) 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  opacity:.18;
-  transform:translate(-6px,4px) scaleY(1.15);
-  filter:blur(.6px);
-  animation:htBackFloat 9s ease-in-out infinite;
+.hl{
+  display:block;width:auto;height:100%;
+  filter:drop-shadow(0 0 18px rgba(124,252,0,.28));
+  animation:hlBreathe 6s ease-in-out infinite;
+  transition:transform .25s, filter .25s;
 }
-@keyframes htBackFloat{0%,100%{transform:translate(-6px,4px) scaleY(1.15)}50%{transform:translate(-4px,2px) scaleY(1.18)}}
-/* chromatic split — green ghost, blood ghost */
-.hero-title .ht-front{
-  position:absolute;inset:0;z-index:2;
-  font-family:'Pirata One','UnifrakturCook',serif;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(124,252,0,.35);
-  text-stroke:1px rgba(124,252,0,.35);
-  transform:translate(-2px,0);
-  mix-blend-mode:screen;
-  animation:htChromatic 6s ease-in-out infinite;
-}
-@keyframes htChromatic{
-  0%,92%,100%{transform:translate(-2px,0);opacity:.6;-webkit-text-stroke-color:rgba(124,252,0,.35)}
-  93%{transform:translate(-6px,1px);opacity:1;-webkit-text-stroke-color:rgba(255,90,90,.6)}
-  94%{transform:translate(2px,-1px);opacity:1;-webkit-text-stroke-color:rgba(124,252,0,.7)}
-  95%{transform:translate(-2px,0);opacity:.6;-webkit-text-stroke-color:rgba(124,252,0,.35)}
+.hl-a{animation-delay:0s}
+.hl-g{height:108%;animation-delay:.6s}
+.hl-i{height:96%;animation-delay:1.2s}
+.hl:hover{transform:translateY(-3px) scale(1.03);filter:drop-shadow(0 0 30px rgba(124,252,0,.55))}
+@keyframes hlBreathe{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-3px) scale(1.012)}
 }
 .hero-subtitle{
   font-family:var(--ff-serif);font-weight:500;
