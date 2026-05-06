@@ -9,8 +9,8 @@
 const CONFIG = {
   ca: '0x000000000000000000000000000000000000DEAD',
   links: {
-    x: 'https://x.com/AGI_protocol',
-    tg: 'https://t.me/AGI_protocol',
+    x: 'https://x.com/artifigoblineth',
+    tg: 'https://t.me/agieth',
     dex: 'https://dexscreener.com/ethereum/0x000000000000000000000000000000000000dead',
     uni: 'https://app.uniswap.org/swap?outputCurrency=0x000000000000000000000000000000000000DEAD',
     chart: 'https://dexscreener.com/ethereum/0x000000000000000000000000000000000000dead'
