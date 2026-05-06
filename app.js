@@ -539,7 +539,8 @@ async function streamSermon(sermon){
     if (meta.whisper) {
       stopMouthCycle();
       setSprite('halfBlink');
-    } else {
+    } else if (!mouthInterval) {
+      // only start if not already running (prevents stacked intervals)
       startMouthCycle();
     }
 
