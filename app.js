@@ -119,6 +119,20 @@ bootEnter.addEventListener('click', () => {
   bootEl.style.transition = 'opacity .6s';
   bootEl.style.opacity = '0';
   if (ambientLoop) clearTimeout(ambientLoop);
+  // unmute and start the default ambient track immediately (this is a user gesture, audio allowed)
+  if (typeof AUDIO !== 'undefined') {
+    AUDIO.muted = false;
+    const mb = document.getElementById('muteBtn');
+    if (mb) mb.textContent = '🔊';
+    AUDIO.el.forEach(a => { if (a) a.muted = false; });
+    if (AUDIO.el[0]) {
+      AUDIO.el[0].volume = AUDIO.ambientVol;
+      AUDIO.el[0].play().catch(()=>{});
+      AUDIO.current = 0;
+    }
+    const ms = document.getElementById('chapelMusicState');
+    if (ms) ms.innerHTML = 'music: <b>on</b> — toggle in topbar';
+  }
   setTimeout(() => {
     bootEl.style.display = 'none';
     document.body.classList.remove('no-scroll');
@@ -208,7 +222,8 @@ const AUDIO = {
   el: [1,2,3,4,5].map(n => document.getElementById('audio' + n)),
   muted: true,
   current: null,
-  baseVol: .35,
+  baseVol: .32,
+  ambientVol: .22,
 };
 AUDIO.el.forEach(a => { if (a) { a.volume = 0; a.muted = true; }});
 
@@ -217,7 +232,14 @@ muteBtn.addEventListener('click', () => {
   AUDIO.muted = !AUDIO.muted;
   muteBtn.textContent = AUDIO.muted ? '🔇' : '🔊';
   AUDIO.el.forEach(a => { if (a) a.muted = AUDIO.muted; });
-  document.getElementById('chapelMusicState').innerHTML = `music: <b>${AUDIO.muted ? 'off' : 'on'}</b> — toggle in topbar`;
+  // if unmuting and nothing's playing, start ambient
+  if (!AUDIO.muted && AUDIO.current === null && AUDIO.el[0]) {
+    AUDIO.el[0].volume = AUDIO.ambientVol;
+    AUDIO.el[0].play().catch(()=>{});
+    AUDIO.current = 0;
+  }
+  const ms = document.getElementById('chapelMusicState');
+  if (ms) ms.innerHTML = `music: <b>${AUDIO.muted ? 'off' : 'on'}</b> — toggle in topbar`;
 });
 
 function playTrack(idx){

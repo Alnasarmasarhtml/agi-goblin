@@ -247,16 +247,60 @@ body::after{
   background:rgba(124,252,0,.05);
 }
 .hero-title{
-  font-family:var(--ff-display);
-  font-size:clamp(96px,14vw,200px);
-  line-height:.85;letter-spacing:.04em;
-  color:var(--cream);
-  text-shadow:
-    0 0 1px var(--gold),
-    2px 2px 0 var(--blood-deep),
-    0 0 60px rgba(201,162,74,.25);
+  position:relative;
+  font-family:'Pirata One','UnifrakturCook',serif;
+  font-size:clamp(110px,16vw,240px);
+  line-height:.85;letter-spacing:.06em;
+  display:inline-block;
+  isolation:isolate;
 }
-.hero-title span{display:inline-block;background:linear-gradient(180deg,var(--gold-glow) 0%,var(--gold) 50%,var(--green-deep) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* main letterform — gold-to-green metallic gradient, blackletter */
+.hero-title .ht-main{
+  position:relative;z-index:3;
+  font-family:'Pirata One','UnifrakturCook',serif;
+  background:linear-gradient(180deg,
+    #fff8d6 0%,
+    var(--gold-glow) 18%,
+    var(--gold) 45%,
+    #6a4a20 70%,
+    var(--green-deep) 92%,
+    var(--green) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:
+    drop-shadow(0 2px 0 rgba(0,0,0,.7))
+    drop-shadow(0 0 40px rgba(201,162,74,.45))
+    drop-shadow(0 0 80px rgba(124,252,0,.18));
+}
+/* angular/futuristic echo behind main */
+.hero-title .ht-back{
+  position:absolute;inset:0;z-index:1;
+  font-family:'Audiowide','Tektur',sans-serif;
+  letter-spacing:.18em;
+  background:linear-gradient(180deg,transparent 30%,var(--green) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:.18;
+  transform:translate(-6px,4px) scaleY(1.15);
+  filter:blur(.6px);
+  animation:htBackFloat 9s ease-in-out infinite;
+}
+@keyframes htBackFloat{0%,100%{transform:translate(-6px,4px) scaleY(1.15)}50%{transform:translate(-4px,2px) scaleY(1.18)}}
+/* chromatic split — green ghost, blood ghost */
+.hero-title .ht-front{
+  position:absolute;inset:0;z-index:2;
+  font-family:'Pirata One','UnifrakturCook',serif;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(124,252,0,.35);
+  text-stroke:1px rgba(124,252,0,.35);
+  transform:translate(-2px,0);
+  mix-blend-mode:screen;
+  animation:htChromatic 6s ease-in-out infinite;
+}
+@keyframes htChromatic{
+  0%,92%,100%{transform:translate(-2px,0);opacity:.6;-webkit-text-stroke-color:rgba(124,252,0,.35)}
+  93%{transform:translate(-6px,1px);opacity:1;-webkit-text-stroke-color:rgba(255,90,90,.6)}
+  94%{transform:translate(2px,-1px);opacity:1;-webkit-text-stroke-color:rgba(124,252,0,.7)}
+  95%{transform:translate(-2px,0);opacity:.6;-webkit-text-stroke-color:rgba(124,252,0,.35)}
+}
 .hero-subtitle{
   font-family:var(--ff-serif);font-weight:500;
   font-size:clamp(18px,2.4vw,28px);letter-spacing:.18em;
@@ -535,11 +579,18 @@ body::after{
   position:relative;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);
 }
+.chapel-bg-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:.28;
+  filter:blur(1px) saturate(.7) contrast(1.1);
+  z-index:0;
+  pointer-events:none;
+}
 .chapel-vignette{
   position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,.6) 60%, #000 100%),
-    radial-gradient(ellipse at top, rgba(124,252,0,.06), transparent 50%);
+    radial-gradient(ellipse at center, transparent 10%, rgba(0,0,0,.55) 55%, #000 100%),
+    radial-gradient(ellipse at top, rgba(124,252,0,.08), transparent 50%);
   z-index:1;
 }
 .chapel-scan{
