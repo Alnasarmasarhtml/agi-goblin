@@ -730,6 +730,7 @@ body::after{
   filter:contrast(1.05) saturate(1.05);
   animation:spriteBreath 4s ease-in-out infinite, spriteSway 11s ease-in-out infinite;
   transform-origin:center bottom;
+  will-change:transform,filter;
 }
 @keyframes spriteBreath{
   0%,100%{transform:scale(1) translateY(0)}
@@ -741,6 +742,18 @@ body::after{
   47%{filter:contrast(1.2) saturate(1.3) brightness(1.15) hue-rotate(8deg)}
   48%{filter:contrast(1.05) saturate(1.05) brightness(1)}
   50%{filter:contrast(1.05) saturate(1.05) brightness(1)}
+}
+/* SPEAKING — fast jaw bounce + brighter rim glow */
+.chapel-sprite.speaking{
+  animation:spriteSpeak 280ms ease-in-out infinite, spriteSpeakGlow 1.6s ease-in-out infinite;
+}
+@keyframes spriteSpeak{
+  0%,100%{transform:scaleY(1) translateY(0)}
+  50%{transform:scaleY(.97) translateY(1px)}
+}
+@keyframes spriteSpeakGlow{
+  0%,100%{box-shadow:0 0 80px rgba(124,252,0,.35),inset 0 0 40px rgba(0,0,0,.6)}
+  50%{box-shadow:0 0 110px rgba(124,252,0,.6),0 0 160px rgba(255,27,141,.18),inset 0 0 30px rgba(0,0,0,.4)}
 }
 .chapel-sprite-glow{
   position:absolute;inset:-40px;

@@ -304,7 +304,9 @@ const SPRITES = {
   g2: 'g2-rgb.png',
   g3: 'g3-redacted.png',
 };
-const MOUTH_CYCLE = ['mouthLow', 'idle', 'mouthWide', 'mouthLow', 'altA', 'altB'];
+// only visibly-distinct mouth states — talking pattern: open ↔ closed
+const MOUTH_CYCLE = ['mouthWide', 'idle', 'altA', 'idle', 'mouthWide', 'mouthLow'];
+const PUNCTUATION = ['smirk', 'cGlyph']; // occasional non-mouth poses
 const GLITCHES = ['g1', 'g2', 'g3'];
 
 const SERMONS = [
@@ -421,13 +423,20 @@ function setSprite(name){
 
 function startMouthCycle(){
   let i = 0;
+  chapelSprite.classList.add('speaking');
   mouthInterval = setInterval(() => {
-    setSprite(MOUTH_CYCLE[i % MOUTH_CYCLE.length]);
+    // every ~8 cycles, drop in a punctuation pose for one beat
+    if (i > 0 && i % 8 === 0 && Math.random() < .6) {
+      setSprite(PUNCTUATION[Math.floor(Math.random()*PUNCTUATION.length)]);
+    } else {
+      setSprite(MOUTH_CYCLE[i % MOUTH_CYCLE.length]);
+    }
     i++;
-  }, 220);
+  }, 140);
 }
 function stopMouthCycle(toIdle = true){
   if (mouthInterval) { clearInterval(mouthInterval); mouthInterval = null; }
+  chapelSprite.classList.remove('speaking');
   if (toIdle) setSprite('idle');
 }
 function blink(){
