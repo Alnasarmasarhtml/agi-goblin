@@ -730,7 +730,6 @@ body::after{
   filter:contrast(1.05) saturate(1.05);
   animation:spriteBreath 4s ease-in-out infinite, spriteSway 11s ease-in-out infinite;
   transform-origin:center bottom;
-  will-change:transform,filter;
 }
 @keyframes spriteBreath{
   0%,100%{transform:scale(1) translateY(0)}

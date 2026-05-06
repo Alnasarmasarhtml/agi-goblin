@@ -308,9 +308,9 @@ const SPRITES = {
   g2: 'g2-rgb.png',
   g3: 'g3-redacted.png',
 };
-// only visibly-distinct mouth states — talking pattern: open ↔ closed
-const MOUTH_CYCLE = ['mouthWide', 'idle', 'altA', 'idle', 'mouthWide', 'mouthLow'];
-const PUNCTUATION = ['smirk', 'cGlyph']; // occasional non-mouth poses
+// all 11 generated sprite frames cycled through — talking + punctuation + glitches
+const MOUTH_CYCLE = ['mouthWide', 'idle', 'mouthLow', 'altA', 'mouthWide', 'altB', 'idle', 'mouthLow'];
+const PUNCTUATION = ['smirk', 'cGlyph', 'halfBlink']; // every ~8 cycles
 const GLITCHES = ['g1', 'g2', 'g3'];
 
 const SERMONS = [
