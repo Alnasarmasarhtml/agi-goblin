@@ -571,4 +571,112 @@ chapelStart.addEventListener('click', () => {
 // idle blinking when not in chapel
 startBlinkLoop();
 
+// ============ NEON SCRIBBLE LAYER ============
+
+// (1) Random full-page neon flash strobes
+const flashEl = document.getElementById('neon-flash');
+function fireFlash(){
+  if (!flashEl) return;
+  flashEl.classList.remove('fire','glitch');
+  void flashEl.offsetWidth;
+  flashEl.classList.add(Math.random() < .35 ? 'glitch' : 'fire');
+}
+function scheduleFlash(){
+  const wait = 9000 + Math.random() * 14000; // 9-23s between
+  setTimeout(() => { fireFlash(); scheduleFlash(); }, wait);
+}
+// kick off after boot
+setTimeout(scheduleFlash, 8000);
+
+// (2) Scribble underline reveal — trigger when section title scrolls into view
+if (window.IntersectionObserver) {
+  const so = new IntersectionObserver((ents) => {
+    ents.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); so.unobserve(e.target); }
+    });
+  }, { threshold: .25 });
+  document.querySelectorAll('.scribble-under').forEach(el => so.observe(el));
+}
+
+// (3) Cursor scribble trail (mouse only — skip on touch devices)
+(function(){
+  const canvas = document.getElementById('scribble-canvas');
+  if (!canvas) return;
+  // skip on touch / coarse pointer
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+    canvas.remove(); return;
+  }
+  const ctx = canvas.getContext('2d');
+  let W = window.innerWidth, H = window.innerHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.scale(dpr, dpr);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const points = [];
+  let lastT = 0;
+  let lastX = -1, lastY = -1;
+  window.addEventListener('mousemove', (e) => {
+    const now = performance.now();
+    const dx = lastX < 0 ? 0 : e.clientX - lastX;
+    const dy = lastY < 0 ? 0 : e.clientY - lastY;
+    const speed = Math.min(1, Math.hypot(dx, dy) / 30);
+    points.push({ x: e.clientX, y: e.clientY, t: now, life: 1, size: 1.6 + speed * 1.2 });
+    lastX = e.clientX; lastY = e.clientY;
+    if (points.length > 80) points.shift();
+  });
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    const now = performance.now();
+    // age points
+    for (let i = points.length - 1; i >= 0; i--) {
+      const p = points[i];
+      p.life = Math.max(0, 1 - (now - p.t) / 900);
+      if (p.life <= 0) points.splice(i, 1);
+    }
+    // draw scribble line through points
+    if (points.length > 1) {
+      // main green
+      ctx.strokeStyle = 'rgba(124,252,0,1)';
+      ctx.shadowColor = 'rgba(124,252,0,.7)';
+      ctx.shadowBlur = 12;
+      for (let i = 1; i < points.length; i++) {
+        const p1 = points[i-1], p2 = points[i];
+        const a = Math.min(p1.life, p2.life);
+        if (a <= 0) continue;
+        ctx.globalAlpha = a * .9;
+        ctx.lineWidth = ((p1.size + p2.size) / 2) * a;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.quadraticCurveTo(p1.x, p1.y, p2.x, p2.y);
+        ctx.stroke();
+      }
+      // pink ghost trailing slightly behind
+      ctx.strokeStyle = 'rgba(255,27,141,.7)';
+      ctx.shadowColor = 'rgba(255,27,141,.5)';
+      for (let i = 1; i < points.length; i++) {
+        const p1 = points[i-1], p2 = points[i];
+        const a = Math.min(p1.life, p2.life) * .35;
+        if (a <= 0) continue;
+        ctx.globalAlpha = a;
+        ctx.lineWidth = ((p1.size + p2.size) / 2) * .6;
+        ctx.beginPath();
+        ctx.moveTo(p1.x + 2, p1.y - 2);
+        ctx.quadraticCurveTo(p1.x + 2, p1.y - 2, p2.x + 2, p2.y - 2);
+        ctx.stroke();
+      }
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
 })();
