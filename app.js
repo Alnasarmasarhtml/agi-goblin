@@ -7,23 +7,27 @@
 
 // --------- CONFIG ---------
 const CONFIG = {
-  ca: '0x000000000000000000000000000000000000DEAD',
+  ca: '0xe99C42B6023C10EF292dbFf98D406388b395597B',
   links: {
     x: 'https://x.com/artifigoblineth',
     tg: 'https://t.me/agieth',
-    dex: 'https://dexscreener.com/ethereum/0x000000000000000000000000000000000000dead',
-    uni: 'https://app.uniswap.org/swap?outputCurrency=0x000000000000000000000000000000000000DEAD',
-    chart: 'https://dexscreener.com/ethereum/0x000000000000000000000000000000000000dead'
+    dex: 'https://dexscreener.com/ethereum/0xe99C42B6023C10EF292dbFf98D406388b395597B',
+    dext: 'https://www.dextools.io/app/en/ether/pair-explorer/0xe99C42B6023C10EF292dbFf98D406388b395597B',
+    uni: 'https://app.uniswap.org/swap?outputCurrency=0xe99C42B6023C10EF292dbFf98D406388b395597B',
+    chart: 'https://dexscreener.com/ethereum/0xe99C42B6023C10EF292dbFf98D406388b395597B'
   }
 };
 
-// Apply links
-['sx','suni','sdex','stg','buyBig','chartBig','agentFollow'].forEach(id => {
+// Update CA display + apply links
+document.querySelectorAll('#caValue, #caValueBig').forEach(el => { if (el) el.textContent = CONFIG.ca; });
+
+['sx','suni','sdex','sdext','stg','buyBig','chartBig','agentFollow'].forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
   if (id === 'sx' || id === 'agentFollow') el.href = CONFIG.links.x;
   if (id === 'stg') el.href = CONFIG.links.tg;
   if (id === 'sdex') el.href = CONFIG.links.dex;
+  if (id === 'sdext') el.href = CONFIG.links.dext;
   if (id === 'suni' || id === 'buyBig') el.href = CONFIG.links.uni;
   if (id === 'chartBig') el.href = CONFIG.links.chart;
 });
